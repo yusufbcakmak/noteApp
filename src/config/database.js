@@ -6,12 +6,7 @@ class DatabaseConnection {
   constructor() {
     this.db = null;
     // Use test database path if provided, otherwise use default
-    // For Netlify, use /tmp directory which is writable
-    if (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-      this.dbPath = process.env.DATABASE_PATH || '/tmp/notes.db';
-    } else {
-      this.dbPath = process.env.TEST_DB_PATH || path.join(process.cwd(), 'database', 'notes.db');
-    }
+    this.dbPath = process.env.TEST_DB_PATH || path.join(process.cwd(), 'database', 'notes.db');
   }
 
   /**
@@ -19,11 +14,6 @@ class DatabaseConnection {
    */
   connect() {
     try {
-      // For Netlify/serverless, we need to initialize database on each request
-      if (process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-        this.initializeServerlessDatabase();
-      }
-      
       // Ensure database directory exists
       const dbDir = path.dirname(this.dbPath);
       if (!fs.existsSync(dbDir)) {
@@ -33,10 +23,8 @@ class DatabaseConnection {
       // Create database connection
       this.db = new Database(this.dbPath);
       
-      // Enable WAL mode for better performance and concurrency (not for serverless)
-      if (!(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME)) {
-        this.db.pragma('journal_mode = WAL');
-      }
+      // Enable WAL mode for better performance and concurrency
+      this.db.pragma('journal_mode = WAL');
       
       // Enable foreign key constraints
       this.db.pragma('foreign_keys = ON');
@@ -49,118 +37,13 @@ class DatabaseConnection {
       
       console.log('Database connected successfully');
       console.log(`Database path: ${this.dbPath}`);
+      console.log(`WAL mode enabled: ${this.db.pragma('journal_mode', { simple: true })}`);
       
       return this.db;
     } catch (error) {
       console.error('Failed to connect to database:', error);
       throw error;
     }
-  }
-
-  /**
-   * Initialize database for serverless environment
-   */
-  initializeServerlessDatabase() {
-    try {
-      // Check if database exists, if not create it with schema
-      if (!fs.existsSync(this.dbPath)) {
-        console.log('Initializing database for serverless environment...');
-        
-        // Create a temporary database connection to initialize schema
-        const tempDb = new Database(this.dbPath);
-        
-        // Initialize basic schema
-        this.initializeSchema(tempDb);
-        
-        tempDb.close();
-        console.log('Serverless database initialized');
-      }
-    } catch (error) {
-      console.error('Failed to initialize serverless database:', error);
-      // Continue anyway, the connection might still work
-    }
-  }
-
-  /**
-   * Initialize basic database schema
-   */
-  initializeSchema(db) {
-    // Users table
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS users (
-        id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        first_name TEXT,
-        last_name TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        is_active BOOLEAN DEFAULT 1,
-        email_verified BOOLEAN DEFAULT 0,
-        last_login DATETIME,
-        failed_login_attempts INTEGER DEFAULT 0,
-        locked_until DATETIME
-      )
-    `);
-
-    // Groups table
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS groups (
-        id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-        name TEXT NOT NULL,
-        description TEXT,
-        color TEXT DEFAULT '#3B82F6',
-        user_id TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-      )
-    `);
-
-    // Notes table
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS notes (
-        id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-        title TEXT NOT NULL,
-        content TEXT,
-        status TEXT DEFAULT 'todo' CHECK (status IN ('todo', 'in_progress', 'completed')),
-        priority TEXT DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'urgent')),
-        due_date DATETIME,
-        group_id TEXT,
-        user_id TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        tags TEXT,
-        reminder_date DATETIME,
-        estimated_time INTEGER,
-        actual_time INTEGER,
-        FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE SET NULL,
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-      )
-    `);
-
-    // Completed notes table
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS completed_notes (
-        id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-        original_note_id TEXT NOT NULL,
-        title TEXT NOT NULL,
-        content TEXT,
-        priority TEXT DEFAULT 'medium',
-        due_date DATETIME,
-        group_id TEXT,
-        user_id TEXT NOT NULL,
-        completed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        original_created_at DATETIME,
-        tags TEXT,
-        estimated_time INTEGER,
-        actual_time INTEGER,
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-      )
-    `);
-
-    console.log('Database schema initialized');
   }
 
   /**

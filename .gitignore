@@ -68,11 +68,4 @@ lib-cov
 ehthumbs.db
 Thumbs.db
 
-# Frontend build
-frontend/dist/
-frontend/node_modules/
-
-# Netlify
-.netlify/
-
 .kiro/

@@ -15,24 +15,18 @@ class EnvironmentConfig {
    * Load configuration from environment variables with defaults
    */
   loadConfiguration() {
-    // Check if running in Netlify/serverless environment
-    const isNetlify = process.env.NETLIFY === 'true' || process.env.AWS_LAMBDA_FUNCTION_NAME;
-    const defaultDatabasePath = isNetlify ? '/tmp/notes.db' : path.join(process.cwd(), 'database', 'notes.db');
-    const defaultLogPath = isNetlify ? '/tmp/app.log' : path.join(process.cwd(), 'logs', 'app.log');
-    
     return {
       // Server Configuration
       server: {
-        port: parseInt(process.env.PORT) || (isNetlify ? 8888 : 3000),
+        port: parseInt(process.env.PORT) || 3000,
         host: process.env.HOST || '0.0.0.0',
-        environment: process.env.NODE_ENV || 'development',
-        isNetlify: isNetlify
+        environment: process.env.NODE_ENV || 'development'
       },
 
       // Database Configuration
       database: {
-        path: process.env.DATABASE_PATH || defaultDatabasePath,
-        enableWAL: process.env.DATABASE_ENABLE_WAL !== 'false' && !isNetlify, // Disable WAL for serverless
+        path: process.env.DATABASE_PATH || path.join(process.cwd(), 'database', 'notes.db'),
+        enableWAL: process.env.DATABASE_ENABLE_WAL !== 'false',
         timeout: parseInt(process.env.DATABASE_TIMEOUT) || 5000,
         verbose: process.env.DATABASE_VERBOSE === 'true'
       },
@@ -59,17 +53,17 @@ class EnvironmentConfig {
       // Rate Limiting Configuration
       rateLimit: {
         windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-        maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || (isNetlify ? 200 : 100), // Higher for serverless
+        maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
         authWindowMs: parseInt(process.env.AUTH_RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-        authMaxRequests: parseInt(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS) || (isNetlify ? 20 : 5)
+        authMaxRequests: parseInt(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS) || 5
       },
 
       // Logging Configuration
       logging: {
         level: process.env.LOG_LEVEL || 'info',
         enableConsole: process.env.LOG_ENABLE_CONSOLE !== 'false',
-        enableFile: process.env.LOG_ENABLE_FILE === 'true' && !isNetlify, // Disable file logging for serverless
-        filePath: process.env.LOG_FILE_PATH || defaultLogPath,
+        enableFile: process.env.LOG_ENABLE_FILE === 'true',
+        filePath: process.env.LOG_FILE_PATH || path.join(process.cwd(), 'logs', 'app.log'),
         maxSize: process.env.LOG_MAX_SIZE || '10m',
         maxFiles: parseInt(process.env.LOG_MAX_FILES) || 5
       },
