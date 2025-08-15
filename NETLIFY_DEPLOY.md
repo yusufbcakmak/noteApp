@@ -15,7 +15,10 @@ Bu proje, Jira benzeri arayüze sahip bir SaaS not yönetim uygulamasıdır ve N
 Build command: npm run build
 Publish directory: frontend/dist
 Functions directory: netlify/functions
+Node version: 20.11.1 (otomatik detect edilecek)
 ```
+
+**Not:** Proje Node.js 20+ gerektirir. Netlify otomatik olarak `.nvmrc` dosyasından veya `netlify.toml`'dan version'ı algılayacaktır.
 
 ### 2. Environment Variables
 
@@ -130,6 +133,10 @@ Base URL: `https://your-site.netlify.app/api`
 
 ## 🛠️ Development
 
+**Requirements:**
+- Node.js 20+
+- npm 10+
+
 ```bash
 # Local development
 npm run dev                 # Start Express server
@@ -167,18 +174,25 @@ npm run test               # Run tests
 
 ### Common Issues
 
-**1. API calls başarısız:**
+**1. Node version error:**
+- Netlify desteklenen Node versiyonlarını kontrol edin
+- `.nvmrc` dosyası doğru mu?
+- `netlify.toml`'da NODE_VERSION doğru mu?
+- Minimum Node.js 20+ gerekli
+
+**2. API calls başarısız:**
 - Environment variables kontrol edin
 - JWT_SECRET doğru set edilmiş mi?
 - CORS settings kontrol edin
 
-**2. Database errors:**
+**3. Database errors:**
 - /tmp write permissions kontrol edin
 - Cold start timeout'u kontrol edin
 
-**3. Build fails:**
+**4. Build fails:**
 - Dependencies güncel mi kontrol edin
 - Frontend build errors kontrol edin
+- Node version compatibility kontrol edin
 
 ### Debug
 

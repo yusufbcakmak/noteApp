@@ -8,8 +8,8 @@
     "start:prod": "NODE_ENV=production node src/server.js",
     "dev": "NODE_ENV=development nodemon src/server.js",
     "dev:debug": "NODE_ENV=development LOG_LEVEL=debug nodemon src/server.js",
-    "build": "npm run build:frontend && npm run build:functions",
-    "build:frontend": "cd frontend && npm install && npm run build",
+    "build": "npm run build:functions && npm run build:frontend",
+    "build:frontend": "cd frontend && npm ci && npm run build",
     "build:functions": "npm run db:setup:netlify",
     "netlify:dev": "netlify dev",
     "netlify:build": "npm run build",
@@ -61,7 +61,8 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.0.0",
