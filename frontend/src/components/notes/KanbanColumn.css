@@ -1,0 +1,106 @@
+.kanban-column {
+  flex: 1;
+  min-width: 300px;
+  max-width: 350px;
+  background-color: #f8fafc;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.kanban-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.kanban-column-header h3 {
+  margin: 0;
+  color: #374151;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.note-count {
+  background-color: #e5e7eb;
+  color: #6b7280;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 24px;
+  text-align: center;
+}
+
+.kanban-column-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Gap'i biraz küçülttük */
+  overflow-y: auto;
+  min-height: 0;
+  max-height: calc(100vh - 250px); /* Maksimum yükseklik belirle */
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin: 0;
+  border: 2px solid transparent;
+}
+
+/* Drop zone active state - sadece içerik alanında kesik çizgiler */
+.kanban-column-content.drop-zone-active {
+  border: 2px dashed #3b82f6;
+  background-color: rgba(59, 130, 246, 0.05);
+  min-height: 120px;
+}
+
+/* Drop zone hover state - sadece içerik alanında kesik çizgiler */
+.kanban-column-content.drop-zone-hover {
+  border: 2px dashed #10b981;
+  background-color: rgba(16, 185, 129, 0.08);
+  box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.kanban-column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.kanban-column-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-column-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.empty-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: #9ca3af;
+  font-style: italic;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Empty column styling during drag */
+.drop-zone-active .empty-column {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.drop-zone-hover .empty-column {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.empty-column p {
+  margin: 0;
+}

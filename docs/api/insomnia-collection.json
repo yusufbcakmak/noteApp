@@ -1,0 +1,138 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-08-15T08:19:16.619Z",
+  "__export_source": "note-management-api",
+  "resources": [
+    {
+      "_id": "wrk_main",
+      "_type": "workspace",
+      "name": "Note Management API",
+      "description": "A SaaS note management application with Jira-like interface"
+    },
+    {
+      "_id": "env_main",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "baseUrl": "http://localhost:3000",
+        "authToken": ""
+      },
+      "parentId": "wrk_main"
+    },
+    {
+      "_id": "fld_authentication",
+      "_type": "request_group",
+      "name": "Authentication",
+      "parentId": "wrk_main"
+    },
+    {
+      "_id": "req_1",
+      "_type": "request",
+      "name": "Register a new user",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/auth/register",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_authentication",
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"email\":\"user@example.com\",\"password\":\"string\",\"firstName\":\"string\",\"lastName\":\"string\"}"
+      }
+    },
+    {
+      "_id": "req_2",
+      "_type": "request",
+      "name": "User login",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/auth/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_authentication",
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"email\":\"user@example.com\",\"password\":\"string\"}"
+      }
+    },
+    {
+      "_id": "req_3",
+      "_type": "request",
+      "name": "Get current user profile",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/auth/me",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_authentication",
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      }
+    },
+    {
+      "_id": "fld_notes",
+      "_type": "request_group",
+      "name": "Notes",
+      "parentId": "wrk_main"
+    },
+    {
+      "_id": "req_4",
+      "_type": "request",
+      "name": "Get user's notes",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/notes",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_notes",
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      }
+    },
+    {
+      "_id": "req_5",
+      "_type": "request",
+      "name": "Create a new note",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/notes",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_notes",
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"title\":\"string\",\"description\":\"string\",\"priority\":\"low\",\"groupId\":\"a1b2c3d4e5f6789012345678901234ab\"}"
+      }
+    }
+  ]
+}

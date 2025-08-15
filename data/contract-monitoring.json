@@ -1,0 +1,768 @@
+{
+  "violations": [
+    {
+      "id": "consistency_1755246152343_xsbb2gdvh",
+      "type": "api_consistency",
+      "subtype": "unused_backend_endpoint",
+      "severity": "warning",
+      "message": "Backend endpoint POST /api/auth/register is not used by frontend",
+      "details": {
+        "type": "unused_backend_endpoint",
+        "severity": "warning",
+        "message": "Backend endpoint POST /api/auth/register is not used by frontend",
+        "endpoint": {
+          "path": "/api/auth/register",
+          "method": "POST",
+          "operationId": "post__api_auth_register",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User registered successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AuthResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest"
+            },
+            "409": {
+              "$ref": "#/components/responses/Conflict"
+            },
+            "429": {
+              "$ref": "#/components/responses/TooManyRequests"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+          },
+          "tags": [
+            "Authentication"
+          ]
+        },
+        "suggestions": []
+      },
+      "timestamp": "2025-08-15T08:22:32.343Z",
+      "source": "consistency_validator"
+    },
+    {
+      "id": "consistency_1755246152343_jzf8z6ttl",
+      "type": "api_consistency",
+      "subtype": "unused_backend_endpoint",
+      "severity": "warning",
+      "message": "Backend endpoint POST /api/auth/login is not used by frontend",
+      "details": {
+        "type": "unused_backend_endpoint",
+        "severity": "warning",
+        "message": "Backend endpoint POST /api/auth/login is not used by frontend",
+        "endpoint": {
+          "path": "/api/auth/login",
+          "method": "POST",
+          "operationId": "post__api_auth_login",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AuthResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest"
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "429": {
+              "$ref": "#/components/responses/TooManyRequests"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+          },
+          "tags": [
+            "Authentication"
+          ]
+        },
+        "suggestions": []
+      },
+      "timestamp": "2025-08-15T08:22:32.343Z",
+      "source": "consistency_validator"
+    },
+    {
+      "id": "consistency_1755246152343_19i27c5dn",
+      "type": "api_consistency",
+      "subtype": "unused_backend_endpoint",
+      "severity": "warning",
+      "message": "Backend endpoint GET /api/auth/me is not used by frontend",
+      "details": {
+        "type": "unused_backend_endpoint",
+        "severity": "warning",
+        "message": "Backend endpoint GET /api/auth/me is not used by frontend",
+        "endpoint": {
+          "path": "/api/auth/me",
+          "method": "GET",
+          "operationId": "get__api_auth_me",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "User profile retrieved successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+          },
+          "tags": [
+            "Authentication"
+          ]
+        },
+        "suggestions": []
+      },
+      "timestamp": "2025-08-15T08:22:32.343Z",
+      "source": "consistency_validator"
+    },
+    {
+      "id": "consistency_1755246152343_1c13px2am",
+      "type": "api_consistency",
+      "subtype": "unused_backend_endpoint",
+      "severity": "warning",
+      "message": "Backend endpoint GET /api/notes is not used by frontend",
+      "details": {
+        "type": "unused_backend_endpoint",
+        "severity": "warning",
+        "message": "Backend endpoint GET /api/notes is not used by frontend",
+        "endpoint": {
+          "path": "/api/notes",
+          "method": "GET",
+          "operationId": "get__api_notes",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/PageParam"
+            },
+            {
+              "$ref": "#/components/parameters/LimitParam"
+            },
+            {
+              "$ref": "#/components/parameters/SortByParam"
+            },
+            {
+              "$ref": "#/components/parameters/SortOrderParam"
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "todo",
+                  "in_progress",
+                  "done"
+                ]
+              },
+              "description": "Filter by note status"
+            },
+            {
+              "name": "priority",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "description": "Filter by note priority"
+            },
+            {
+              "name": "groupId",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              "description": "Filter by group ID"
+            },
+            {
+              "name": "search",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "maxLength": 255
+              },
+              "description": "Search in note titles and descriptions"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Notes retrieved successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/PaginatedResponse"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "$ref": "#/components/schemas/Note"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest"
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+          },
+          "tags": [
+            "Notes"
+          ]
+        },
+        "suggestions": []
+      },
+      "timestamp": "2025-08-15T08:22:32.343Z",
+      "source": "consistency_validator"
+    },
+    {
+      "id": "consistency_1755246152343_du8gynqkh",
+      "type": "api_consistency",
+      "subtype": "unused_backend_endpoint",
+      "severity": "warning",
+      "message": "Backend endpoint POST /api/notes is not used by frontend",
+      "details": {
+        "type": "unused_backend_endpoint",
+        "severity": "warning",
+        "message": "Backend endpoint POST /api/notes is not used by frontend",
+        "endpoint": {
+          "path": "/api/notes",
+          "method": "POST",
+          "operationId": "post__api_notes",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateNoteRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Note created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Note"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest"
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+          },
+          "tags": [
+            "Notes"
+          ]
+        },
+        "suggestions": []
+      },
+      "timestamp": "2025-08-15T08:22:32.343Z",
+      "source": "consistency_validator"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert_threshold_1755246152349",
+      "type": "violation_threshold",
+      "severity": "warning",
+      "title": "High Number of API Contract Violations (5)",
+      "message": "5 violations detected, exceeding threshold of 5.",
+      "details": {
+        "checkId": "check_1755246152323",
+        "timestamp": "2025-08-15T08:22:32.323Z",
+        "consistency": {
+          "status": "issues_detected",
+          "violations": [
+            {
+              "id": "consistency_1755246152343_xsbb2gdvh",
+              "type": "api_consistency",
+              "subtype": "unused_backend_endpoint",
+              "severity": "warning",
+              "message": "Backend endpoint POST /api/auth/register is not used by frontend",
+              "details": {
+                "type": "unused_backend_endpoint",
+                "severity": "warning",
+                "message": "Backend endpoint POST /api/auth/register is not used by frontend",
+                "endpoint": {
+                  "path": "/api/auth/register",
+                  "method": "POST",
+                  "operationId": "post__api_auth_register",
+                  "parameters": [],
+                  "requestBody": {
+                    "required": true,
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/RegisterRequest"
+                        }
+                      }
+                    }
+                  },
+                  "responses": {
+                    "201": {
+                      "description": "User registered successfully",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/AuthResponse"
+                          }
+                        }
+                      }
+                    },
+                    "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                    },
+                    "409": {
+                      "$ref": "#/components/responses/Conflict"
+                    },
+                    "429": {
+                      "$ref": "#/components/responses/TooManyRequests"
+                    },
+                    "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                    }
+                  },
+                  "tags": [
+                    "Authentication"
+                  ]
+                },
+                "suggestions": []
+              },
+              "timestamp": "2025-08-15T08:22:32.343Z",
+              "source": "consistency_validator"
+            },
+            {
+              "id": "consistency_1755246152343_jzf8z6ttl",
+              "type": "api_consistency",
+              "subtype": "unused_backend_endpoint",
+              "severity": "warning",
+              "message": "Backend endpoint POST /api/auth/login is not used by frontend",
+              "details": {
+                "type": "unused_backend_endpoint",
+                "severity": "warning",
+                "message": "Backend endpoint POST /api/auth/login is not used by frontend",
+                "endpoint": {
+                  "path": "/api/auth/login",
+                  "method": "POST",
+                  "operationId": "post__api_auth_login",
+                  "parameters": [],
+                  "requestBody": {
+                    "required": true,
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/LoginRequest"
+                        }
+                      }
+                    }
+                  },
+                  "responses": {
+                    "200": {
+                      "description": "Login successful",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/AuthResponse"
+                          }
+                        }
+                      }
+                    },
+                    "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "429": {
+                      "$ref": "#/components/responses/TooManyRequests"
+                    },
+                    "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                    }
+                  },
+                  "tags": [
+                    "Authentication"
+                  ]
+                },
+                "suggestions": []
+              },
+              "timestamp": "2025-08-15T08:22:32.343Z",
+              "source": "consistency_validator"
+            },
+            {
+              "id": "consistency_1755246152343_19i27c5dn",
+              "type": "api_consistency",
+              "subtype": "unused_backend_endpoint",
+              "severity": "warning",
+              "message": "Backend endpoint GET /api/auth/me is not used by frontend",
+              "details": {
+                "type": "unused_backend_endpoint",
+                "severity": "warning",
+                "message": "Backend endpoint GET /api/auth/me is not used by frontend",
+                "endpoint": {
+                  "path": "/api/auth/me",
+                  "method": "GET",
+                  "operationId": "get__api_auth_me",
+                  "parameters": [],
+                  "responses": {
+                    "200": {
+                      "description": "User profile retrieved successfully",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                              "success": {
+                                "type": "boolean",
+                                "example": true
+                              },
+                              "data": {
+                                "$ref": "#/components/schemas/User"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                    }
+                  },
+                  "tags": [
+                    "Authentication"
+                  ]
+                },
+                "suggestions": []
+              },
+              "timestamp": "2025-08-15T08:22:32.343Z",
+              "source": "consistency_validator"
+            },
+            {
+              "id": "consistency_1755246152343_1c13px2am",
+              "type": "api_consistency",
+              "subtype": "unused_backend_endpoint",
+              "severity": "warning",
+              "message": "Backend endpoint GET /api/notes is not used by frontend",
+              "details": {
+                "type": "unused_backend_endpoint",
+                "severity": "warning",
+                "message": "Backend endpoint GET /api/notes is not used by frontend",
+                "endpoint": {
+                  "path": "/api/notes",
+                  "method": "GET",
+                  "operationId": "get__api_notes",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/PageParam"
+                    },
+                    {
+                      "$ref": "#/components/parameters/LimitParam"
+                    },
+                    {
+                      "$ref": "#/components/parameters/SortByParam"
+                    },
+                    {
+                      "$ref": "#/components/parameters/SortOrderParam"
+                    },
+                    {
+                      "name": "status",
+                      "in": "query",
+                      "schema": {
+                        "type": "string",
+                        "enum": [
+                          "todo",
+                          "in_progress",
+                          "done"
+                        ]
+                      },
+                      "description": "Filter by note status"
+                    },
+                    {
+                      "name": "priority",
+                      "in": "query",
+                      "schema": {
+                        "type": "string",
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      },
+                      "description": "Filter by note priority"
+                    },
+                    {
+                      "name": "groupId",
+                      "in": "query",
+                      "schema": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{32}$"
+                      },
+                      "description": "Filter by group ID"
+                    },
+                    {
+                      "name": "search",
+                      "in": "query",
+                      "schema": {
+                        "type": "string",
+                        "maxLength": 255
+                      },
+                      "description": "Search in note titles and descriptions"
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "Notes retrieved successfully",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/PaginatedResponse"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "data": {
+                                    "type": "object",
+                                    "properties": {
+                                      "items": {
+                                        "type": "array",
+                                        "items": {
+                                          "$ref": "#/components/schemas/Note"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                    }
+                  },
+                  "tags": [
+                    "Notes"
+                  ]
+                },
+                "suggestions": []
+              },
+              "timestamp": "2025-08-15T08:22:32.343Z",
+              "source": "consistency_validator"
+            },
+            {
+              "id": "consistency_1755246152343_du8gynqkh",
+              "type": "api_consistency",
+              "subtype": "unused_backend_endpoint",
+              "severity": "warning",
+              "message": "Backend endpoint POST /api/notes is not used by frontend",
+              "details": {
+                "type": "unused_backend_endpoint",
+                "severity": "warning",
+                "message": "Backend endpoint POST /api/notes is not used by frontend",
+                "endpoint": {
+                  "path": "/api/notes",
+                  "method": "POST",
+                  "operationId": "post__api_notes",
+                  "parameters": [],
+                  "requestBody": {
+                    "required": true,
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/CreateNoteRequest"
+                        }
+                      }
+                    }
+                  },
+                  "responses": {
+                    "201": {
+                      "description": "Note created successfully",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                              "success": {
+                                "type": "boolean",
+                                "example": true
+                              },
+                              "data": {
+                                "$ref": "#/components/schemas/Note"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                    }
+                  },
+                  "tags": [
+                    "Notes"
+                  ]
+                },
+                "suggestions": []
+              },
+              "timestamp": "2025-08-15T08:22:32.343Z",
+              "source": "consistency_validator"
+            }
+          ],
+          "summary": {
+            "frontendApiCalls": 0,
+            "backendEndpoints": 5,
+            "inconsistencies": 5
+          }
+        },
+        "validation": {
+          "status": "healthy",
+          "violations": [],
+          "summary": {
+            "requestFailureRate": "0.00%",
+            "responseFailureRate": "0.00%",
+            "totalRequests": 0,
+            "totalResponses": 0,
+            "recentErrorCount": 0
+          }
+        },
+        "schema": {
+          "status": "healthy",
+          "violations": [],
+          "summary": {
+            "specValid": true,
+            "pathCount": 4,
+            "schemaCount": 14,
+            "currentVersion": "1.0.0"
+          }
+        },
+        "summary": {
+          "totalViolations": 5,
+          "criticalViolations": 0,
+          "warningViolations": 5
+        }
+      },
+      "timestamp": "2025-08-15T08:22:32.349Z"
+    }
+  ],
+  "reports": [],
+  "metrics": {
+    "totalChecks": 1,
+    "violationsDetected": 5,
+    "alertsSent": 1,
+    "reportsGenerated": 0
+  },
+  "lastUpdated": "2025-08-15T08:22:32.349Z"
+}
